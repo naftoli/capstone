@@ -1,33 +1,25 @@
 import unittest
 import json
 import requests
+from api import api
 from app import create_app
-from models import setup_db, User, Favorite
-from flask_sqlalchemy import SQLAlchemy
+from models import db, setup_db, User, Favorite
 
 class CapstoneTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.app = create_app()
+        self.app = create_app('testing')
+        self.app.register_blueprint(api)
         self.client = self.app.test_client
-        self.database_name = "test_api"
-        self.database_path = "sqlite://{}/{}".format('localhost:5432', self.database_name)
-        setup_db(self.app, self.database_path)
-
-        #binds app to current context
-        with self.app.app_context():
-            self.db = SQLAlchemy()
-            self.db.init_app(self.app)
-            #create all tables
-            self.db.create_all()
-
+        self.manager_token = None
+        self.reg_user_token = None
         self.set_tokens()
 
     def set_tokens(self):
         manager_url = "https://dev-inm1j600yp4jk16p.us.auth0.com/authorize/?audience=capstone&client_id=U2SPlOSDU4AWFmxPsnYro73MRTQPtGl7&client_secret=drZDTXsmbgapjoJjxyTgkTyBYaQO-oG-h7Fbz1u35KAk-pcTe8MzZRMKeT7FEw6M&response_type=token&redirect_uri=https://mashpia.com/udacity_login"
         reg_user_url = "https://dev-inm1j600yp4jk16p.us.auth0.com/authorize/?audience=capstone&client_id=U2SPlOSDU4AWFmxPsnYro73MRTQPtGl7&client_secret=drZDTXsmbgapjoJjxyTgkTyBYaQO-oG-h7Fbz1u35KAk-pcTe8MzZRMKeT7FEw6M&response_type=token&redirect_uri=https://mashpia.com/udacity_login"
 
-        if not self.manager_token:
+        if self.manager_token == None:
             # set the user credentials
             username = "naftolir@gmail.com"
             password = "Naftoli8770!"
@@ -37,7 +29,7 @@ class CapstoneTestCase(unittest.TestCase):
             data = json.loads(response.text)
             self.manager_token = data['access_token']
 
-        if not self.reg_user_token:
+        if self.reg_user_token == None:
             # set the user credentials
             username = "user@mashpia.com"
             password = "Naftoli8770!"
@@ -48,7 +40,8 @@ class CapstoneTestCase(unittest.TestCase):
             self.reg_user_token = data['access_token']
 
     def tearDown(self):
-        pass
+        db.session.remove()
+        db.drop_all()
 
     def test_get_all(self):
         #make sure we have at least one user
