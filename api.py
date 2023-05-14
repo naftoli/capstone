@@ -1,8 +1,17 @@
 from flask import Blueprint, jsonify, abort, request
 from models import User, Favorite
 from auth import AuthError, requires_auth
+import jwt
 
 api = Blueprint('api', __name__)
+
+secret_key = 'capstone'
+payload = {
+    'user_id': 1,
+    'username': 'naftoli@gmail.com',
+    'permissions': ['get:all', 'get:user', 'get:users', 'post:favorite', 'delete:favorite']
+}
+jwt_token = jwt.encode(payload, secret_key, algorithm='HS256')
 
 # ROUTES
 @api.route('/', methods=['GET'])
