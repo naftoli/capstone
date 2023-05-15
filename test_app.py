@@ -53,7 +53,7 @@ class CapstoneTestCase(unittest.TestCase):
             )
             user.insert()
 
-        res = self.client().get('/', headers={'Authorization': f'Bearer {self.manager_token}'})
+        res = self.client().get('/', headers={'Authorization': 'Bearer ' + self.manager_token})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -61,7 +61,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(len(data['users']))
 
     def test_get_users(self):
-        res = self.client().get('/users', headers={'Authorization': f'Bearer {self.manager_token}'})
+        res = self.client().get('/users', headers={'Authorization': 'Bearer ' + self.manager_token})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -69,7 +69,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(len(data['users']))
 
     def test_get_user(self):
-        res = self.client().get('/users/1', headers={'Authorization': f'Bearer {self.manager_token}'})
+        res = self.client().get('/users/1', headers={'Authorization': 'Bearer ' + self.manager_token})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -77,7 +77,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['user']['id'], 1)
 
     def test_create_user(self):
-        res = self.client().post('/users', headers={'Authorization': f'Bearer {self.manager_token}'},
+        res = self.client().post('/users', headers={'Authorization': 'Bearer ' + self.manager_token},
                                  json={"first_name": "Jane", "last_name": "Doe", "email": "jane@doe.com", "password": "1234"})
         data = json.loads(res.data)
 
@@ -86,7 +86,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['user'])
 
     def test_add_favorite(self):
-        res = self.client().post('/users/1/favorites', headers={'Authorization': f'Bearer {self.reg_user_token}'},
+        res = self.client().post('/users/1/favorites', headers={'Authorization': 'Bearer ' + self.reg_user_token},
                                  json={"user_id": 1, "link": "https://www.google.com"})
         data = json.loads(res.data)
 
@@ -95,7 +95,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['favorite'])
 
     def test_update_user(self):
-        res = self.client().patch('/users/1', headers={'Authorization': f'Bearer {self.manager_token}'},
+        res = self.client().patch('/users/1', headers={'Authorization': 'Bearer ' + self.manager_token},
                                   json={"first_name": "Jane"})
         data = json.loads(res.data)
 
@@ -104,7 +104,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['user']['first_name'], "Jane")
 
     def test_update_favorite(self):
-        res = self.client().patch('/users/1/favorites/1', headers={'Authorization': f'Bearer {self.reg_user_token}'},
+        res = self.client().patch('/users/1/favorites/1', headers={'Authorization': 'Bearer ' + self.reg_user_token},
                                   json={"link": "https://www.updatedlink.com"})
         data = json.loads(res.data)
 
@@ -113,7 +113,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['favorite']['link'], "https://www.updatedlink.com")
 
     def test_delete_user(self):
-        res = self.client().delete('/users/1', headers={'Authorization': f'Bearer {self.manager_token}'})
+        res = self.client().delete('/users/1', headers={'Authorization': 'Bearer ' + self.manager_token})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
