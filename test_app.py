@@ -17,6 +17,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.set_tokens()
         self.app_context = self.app.app_context()
         self.app_context.push()
+        db.create_all()
 
     def set_tokens(self):
         secret_key = 'capstone'
