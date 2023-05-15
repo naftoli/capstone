@@ -25,7 +25,7 @@ class CapstoneTestCase(unittest.TestCase):
             payload = {
                 'user_id': 1,
                 'username': 'naftoli@gmail.com',
-                'password': 'Naftoli8770!',
+                'password': '123456',
                 'permissions': ['get:all', 'get:user', 'get:users', 'post:favorite', 'delete:favorite']
             }
             self.manager_token = jwt.encode(payload, secret_key, algorithm='HS256')
@@ -33,7 +33,7 @@ class CapstoneTestCase(unittest.TestCase):
             payload = {
                 'user_id': 2,
                 'username': 'user@mashpia.com',
-                'password': 'Naftoli8770!',
+                'password': '123456',
                 'permissions': ['get:all', 'get:user', 'get:users']
             }
             self.reg_user_token = jwt.encode(payload, secret_key, algorithm='HS256')
