@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, abort, request, redirect
+from flask import Blueprint, jsonify, abort, request, redirect, session
 from models import User, Favorite
 from auth import AuthError, requires_auth
+import requests
 
 api = Blueprint('api', __name__)
 
@@ -11,12 +12,42 @@ CLIENT_ID = 'uUKRtQr1XSC5ZGfwb1s5hYvLDfQ1BChT'
 CLIENT_SECRET = 'DmXVlcTPPqOeZbbPSK22RU--hplvVHdJ_PGjy0WkyOUGMkqh6eNTW6_6kwGY1YMA'
 
 # ROUTES
-@api.route('/login')
-def login():
-    return redirect('https://' + AUTH0_DOMAIN + '/authorize?audience=' + API_AUDIENCE + '&response_type=token&client_id=' + CLIENT_ID + '&redirect_uri=' + request.host_url + 'login-results')
+@api.route('/admin-login')
+def admin_login():
+    username = 'admin@gmail.com'
+    password = 'admin@5783!'
+    access_token = requests.post(
+        f"https://{AUTH0_DOMAIN}/oauth/token",
+        data={
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "audience": API_AUDIENCE,
+            "username": username,
+            "password": password,
+            "grant_type": "client_credentials",
+        },
+    ).json()["access_token"]
+    session['token'] = 'Bearer ' + access_token
+    print(access_token)
+    return "Logged in"
 
-@api.route('/login-results')
-def callback_handling():
+@api.route('/user-login')
+def user_login():
+    username = 'user@gmail.com'
+    password = 'user@5783!'
+    access_token = requests.post(
+        f"https://{AUTH0_DOMAIN}/oauth/token",
+        data={
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "audience": API_AUDIENCE,
+            "username": username,
+            "password": password,
+            "grant_type": "client_credentials",
+        },
+    ).json()["access_token"]
+    session['token'] = 'Bearer ' + access_token
+    print(access_token)
     return "Logged in"
 
 @api.route('/', methods=['GET'])
@@ -207,14 +238,6 @@ def delete_favorite(payload, user_id, favorite_id):
     }), 200
 
 ''' setup error handling '''
-@api.errorhandler(404)
-def not_found(error):
-    return jsonify({
-        'success': False,
-        'error': 404,
-        'message': 'resource not found'
-    }), 404
-
 @api.errorhandler(400)
 def invalid_request(error):
     return jsonify({
@@ -238,6 +261,14 @@ def no_permission(error):
         'error': 403,
         'message': 'invalid permissions'
     }), 403
+
+@api.errorhandler(404)
+def not_found(error):
+    return jsonify({
+        'success': False,
+        'error': 404,
+        'message': 'resource not found'
+    }), 404
 
 @api.errorhandler(AuthError)
 def auth_error(e):

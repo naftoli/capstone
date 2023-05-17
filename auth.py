@@ -1,5 +1,5 @@
 import json
-from flask import request
+from flask import request, session
 from functools import wraps
 from urllib.request import urlopen
 from jose import jwt
@@ -17,7 +17,8 @@ class AuthError(Exception):
 ## Auth Header
 
 def get_token_auth_header():
-    auth = request.headers.get('Authorization', None)
+    # auth = request.headers.get('Authorization', None)
+    auth = session.get('token')
     if not auth:
         raise AuthError({
             'code': 'auth_missing',

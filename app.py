@@ -8,6 +8,7 @@ def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
+    app.secret_key = 'naftoli'
     return app
 
 app = create_app()
