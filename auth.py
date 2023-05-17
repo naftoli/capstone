@@ -7,8 +7,6 @@ from jose import jwt
 AUTH0_DOMAIN = 'dev-inm1j600yp4jk16p.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'capstone'
-CLIENT_ID = 'U2SPlOSDU4AWFmxPsnYro73MRTQPtGl7'
-CLIENT_SECRET = 'drZDTXsmbgapjoJjxyTgkTyBYaQO-oG-h7Fbz1u35KAk-pcTe8MzZRMKeT7FEw6M'
 
 ## AuthError Exception
 class AuthError(Exception):
