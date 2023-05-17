@@ -34,7 +34,7 @@ requests-file==1.5.1
 rsa==4.9
 shellescape==3.8.1
 six==1.16.0
-SQLAlchemy==2.0.10
+SQLAlchemy==1.4.18
 tldextract==3.4.0
 typing_extensions==4.5.0
 urllib3==1.26.15

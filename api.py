@@ -1,19 +1,22 @@
-from flask import Blueprint, jsonify, abort, request
+from flask import Blueprint, jsonify, abort, request, redirect
 from models import User, Favorite
 from auth import AuthError, requires_auth
-import jwt
 
 api = Blueprint('api', __name__)
 
-secret_key = 'capstone'
-payload = {
-    'user_id': 1,
-    'username': 'naftoli@gmail.com',
-    'permissions': ['get:all', 'get:user', 'get:users', 'post:favorite', 'delete:favorite']
-}
-jwt_token = jwt.encode(payload, secret_key, algorithm='HS256')
+AUTH0_DOMAIN = 'dev-inm1j600yp4jk16p.us.auth0.com'
+ALGORITHMS = ['RS256']
+API_AUDIENCE = 'capstone'
 
 # ROUTES
+@api.route('/login')
+def login():
+    return redirect('https://' + AUTH0_DOMAIN + '/authorize?audience=' + API_AUDIENCE + '&response_type=token&client_id=' + CLIENT_ID + '&redirect_uri=' + request.host_url + 'login-results')
+
+@api.route('/login-results')
+def callback_handling():
+    return "Logged in"
+
 @api.route('/', methods=['GET'])
 @requires_auth('get:all')
 def get_all(payload):
