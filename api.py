@@ -4,11 +4,11 @@ from auth import AuthError, requires_auth
 
 api = Blueprint('api', __name__)
 
-AUTH0_DOMAIN = 'dev-inm1j600yp4jk16p.us.auth0.com'
+AUTH0_DOMAIN = 'tzivos.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'capstone'
-CLIENT_ID = 'U2SPlOSDU4AWFmxPsnYro73MRTQPtGl7'
-CLIENT_SECRET = 'drZDTXsmbgapjoJjxyTgkTyBYaQO-oG-h7Fbz1u35KAk-pcTe8MzZRMKeT7FEw6M'
+CLIENT_ID = 'fJVkv4cfioDI34UU9M12Kn6QseInZIGdZ'
+CLIENT_SECRET = 'LEuarqV8ADC38eXI4t6SWOU_C_1zbqQqq61z9-antoM7RKhupBh6bMpcO-oxrPfs'
 
 # ROUTES
 @api.route('/login')

@@ -4,7 +4,7 @@ from functools import wraps
 from urllib.request import urlopen
 from jose import jwt
 
-AUTH0_DOMAIN = 'dev-inm1j600yp4jk16p.us.auth0.com'
+AUTH0_DOMAIN = 'tzivos.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'capstone'
 
