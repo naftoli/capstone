@@ -7,8 +7,8 @@ api = Blueprint('api', __name__)
 AUTH0_DOMAIN = 'tzivos.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'capstone'
-CLIENT_ID = 'fJVkv4cfioDI34UU9M12Kn6QseInZIGdZ'
-CLIENT_SECRET = 'LEuarqV8ADC38eXI4t6SWOU_C_1zbqQqq61z9-antoM7RKhupBh6bMpcO-oxrPfs'
+CLIENT_ID = 'uUKRtQr1XSC5ZGfwb1s5hYvLDfQ1BChT'
+CLIENT_SECRET = 'DmXVlcTPPqOeZbbPSK22RU--hplvVHdJ_PGjy0WkyOUGMkqh6eNTW6_6kwGY1YMA'
 
 # ROUTES
 @api.route('/login')
