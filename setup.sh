@@ -1,4 +1,4 @@
-#Auth0 Info
+#Auth0 Info for JWTs used in test_app.py
 export AUTH0_DOMAIN='tzivos.us.auth0.com'
 export ALGORITHMS=['RS256']
 export API_AUDIENCE='capstone'
