@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from api import api
-from models import setup_db
+from models import setup_db, db
 
 # create and configure the app
 def create_app(test_config=None):
@@ -9,6 +9,8 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
     app.secret_key = 'naftoli'
+    with app.app_context():
+        db.create_all()
     return app
 
 app = create_app()
