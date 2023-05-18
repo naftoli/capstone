@@ -33,13 +33,15 @@ def loggedout():
 
 @api.route('/admin-login')
 def admin_login():
+    TMP_CLIENT_ID = 'uUKRtQr1XSC5ZGfwb1s5hYvLDfQ1BChT'
+    TMP_CLIENT_SECRET = 'DmXVlcTPPqOeZbbPSK22RU--hplvVHdJ_PGjy0WkyOUGMkqh6eNTW6_6kwGY1YMA'
     username = 'admin@gmail.com'
     password = 'admin@5783!'
     access_token = requests.post(
         f"https://{AUTH0_DOMAIN}/oauth/token",
         data={
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
+            "client_id": TMP_CLIENT_ID,
+            "client_secret": TMP_CLIENT_SECRET,
             "audience": API_AUDIENCE,
             "username": username,
             "password": password,
@@ -52,13 +54,15 @@ def admin_login():
 
 @api.route('/user-login')
 def user_login():
+    TMP_CLIENT_ID = 'uUKRtQr1XSC5ZGfwb1s5hYvLDfQ1BChT'
+    TMP_CLIENT_SECRET = 'DmXVlcTPPqOeZbbPSK22RU--hplvVHdJ_PGjy0WkyOUGMkqh6eNTW6_6kwGY1YMA'
     username = 'user@gmail.com'
     password = 'user@5783!'
     access_token = requests.post(
         f"https://{AUTH0_DOMAIN}/oauth/token",
         data={
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
+            "client_id": TMP_CLIENT_ID,
+            "client_secret": TMP_CLIENT_SECRET,
             "audience": API_AUDIENCE,
             "username": username,
             "password": password,
