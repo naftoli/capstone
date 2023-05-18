@@ -47,7 +47,6 @@ Setting the `FLASK_APP` variable to `app.py` directs flask to use the `app.py` f
 ## Testing
 To run the tests, run
 ```bash
-source setup.sh
 python test_app.py
 ```
 
