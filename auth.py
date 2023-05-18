@@ -1,12 +1,13 @@
+import os
 import json
 from flask import request, session
 from functools import wraps
 from urllib.request import urlopen
 from jose import jwt
 
-AUTH0_DOMAIN = 'tzivos.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'capstone'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get('ALGORITHMS')
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
 
 ## AuthError Exception
 class AuthError(Exception):
@@ -15,9 +16,11 @@ class AuthError(Exception):
         self.status_code = status_code
 
 ## Auth Header
-
 def get_token_auth_header():
-    auth = request.headers.get('Authorization', None)
+    if 'token' in session:
+        auth = session['token']
+    else:
+        auth = request.headers.get('Authorization', None)
     if not auth:
         raise AuthError({
             'code': 'auth_missing',

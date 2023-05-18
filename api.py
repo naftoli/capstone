@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, abort, request, redirect, session
 from models import User, Favorite
 from auth import AuthError, requires_auth
 import requests
-import urllib
 
 api = Blueprint('api', __name__)
 
@@ -15,12 +14,24 @@ CLIENT_SECRET = 'LEuarqV8ADC38eXI4t6SWOU_C_1zbqQqq61z9-antoM7RKhupBh6bMpcO-oxrPf
 # ROUTES
 @api.route('/login')
 def login():
-    return redirect('https://' + AUTH0_DOMAIN + '/authorize?audience=' + API_AUDIENCE + '&response_type=token&client_id=' + CLIENT_ID + '&redirect_uri=' + request.host_url + 'login-results')
+    return redirect('https://' + AUTH0_DOMAIN + '/authorize?audience=' + API_AUDIENCE + '&response_type=code&client_id=' + CLIENT_ID + '&redirect_uri=' + request.host_url + 'login-results')
 
 @api.route('/login-results')
 def callback_handling():
-    pieces = urllib.parse.urlparse(request.url)
-    print(pieces)
+    code = request.args.get('code')
+    reponse = requests.post(
+        f"https://{AUTH0_DOMAIN}/oauth/token",
+        data={
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "audience": API_AUDIENCE,
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": request.host_url + 'login-results'
+        }
+    )
+    access_token = reponse.json()["access_token"]
+    session['token'] = 'Bearer ' + access_token
     return "Logged in"
 
 @api.route('/logout')
@@ -30,48 +41,6 @@ def logout():
 @api.route('/logout-results')
 def loggedout():
     return "Logged out"
-
-@api.route('/admin-login')
-def admin_login():
-    TMP_CLIENT_ID = 'uUKRtQr1XSC5ZGfwb1s5hYvLDfQ1BChT'
-    TMP_CLIENT_SECRET = 'DmXVlcTPPqOeZbbPSK22RU--hplvVHdJ_PGjy0WkyOUGMkqh6eNTW6_6kwGY1YMA'
-    username = 'admin@gmail.com'
-    password = 'admin@5783!'
-    access_token = requests.post(
-        f"https://{AUTH0_DOMAIN}/oauth/token",
-        data={
-            "client_id": TMP_CLIENT_ID,
-            "client_secret": TMP_CLIENT_SECRET,
-            "audience": API_AUDIENCE,
-            "username": username,
-            "password": password,
-            "grant_type": "client_credentials",
-        },
-    ).json()["access_token"]
-    print(access_token)
-    session['admin_token'] = 'Bearer ' + access_token
-    return "Logged in"
-
-@api.route('/user-login')
-def user_login():
-    TMP_CLIENT_ID = 'uUKRtQr1XSC5ZGfwb1s5hYvLDfQ1BChT'
-    TMP_CLIENT_SECRET = 'DmXVlcTPPqOeZbbPSK22RU--hplvVHdJ_PGjy0WkyOUGMkqh6eNTW6_6kwGY1YMA'
-    username = 'user@gmail.com'
-    password = 'user@5783!'
-    access_token = requests.post(
-        f"https://{AUTH0_DOMAIN}/oauth/token",
-        data={
-            "client_id": TMP_CLIENT_ID,
-            "client_secret": TMP_CLIENT_SECRET,
-            "audience": API_AUDIENCE,
-            "username": username,
-            "password": password,
-            "grant_type": "client_credentials",
-        },
-    ).json()["access_token"]
-    session['token'] = 'Bearer ' + access_token
-    print(access_token)
-    return "Logged in"
 
 @api.route('/', methods=['GET'])
 @requires_auth('get:all')
@@ -228,11 +197,13 @@ def delete_user(payload, user_id):
     ''' delete user from database '''
     user = User.query.get(user_id)
     if not user:
+        print("No such user with ID: ", user_id)
         abort(400)
 
     try:
         user.delete()
     except:
+        print("Error deleting user with ID: ", user_id)
         abort(400)
 
     return jsonify({
