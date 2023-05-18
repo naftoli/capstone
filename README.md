@@ -36,7 +36,6 @@ Make sure you are working using your created virtual environment.
 
 To run the server, execute:
 ```bash
-soure setup.sh
 export FLASK_APP=app.py
 export FLASK_ENV=development
 flask run
