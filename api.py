@@ -2,16 +2,35 @@ from flask import Blueprint, jsonify, abort, request, redirect, session
 from models import User, Favorite
 from auth import AuthError, requires_auth
 import requests
+import urllib
 
 api = Blueprint('api', __name__)
 
 AUTH0_DOMAIN = 'tzivos.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'capstone'
-CLIENT_ID = 'uUKRtQr1XSC5ZGfwb1s5hYvLDfQ1BChT'
-CLIENT_SECRET = 'DmXVlcTPPqOeZbbPSK22RU--hplvVHdJ_PGjy0WkyOUGMkqh6eNTW6_6kwGY1YMA'
+CLIENT_ID = 'JVkv4cfioDI34UU9M12Kn6QseInZIGdZ'
+CLIENT_SECRET = 'LEuarqV8ADC38eXI4t6SWOU_C_1zbqQqq61z9-antoM7RKhupBh6bMpcO-oxrPfs'
 
 # ROUTES
+@api.route('/login')
+def login():
+    return redirect('https://' + AUTH0_DOMAIN + '/authorize?audience=' + API_AUDIENCE + '&response_type=token&client_id=' + CLIENT_ID + '&redirect_uri=' + request.host_url + 'login-results')
+
+@api.route('/login-results')
+def callback_handling():
+    pieces = urllib.parse.urlparse(request.url)
+    print(pieces)
+    return "Logged in"
+
+@api.route('/logout')
+def logout():
+    return redirect('https://' + AUTH0_DOMAIN + '/v2/logout?audience=' + API_AUDIENCE + '&client_id=' + CLIENT_ID + '&returnTo=' + request.host_url + 'logout-results')
+
+@api.route('/logout-results')
+def loggedout():
+    return "Logged out"
+
 @api.route('/admin-login')
 def admin_login():
     username = 'admin@gmail.com'
@@ -27,8 +46,8 @@ def admin_login():
             "grant_type": "client_credentials",
         },
     ).json()["access_token"]
-    session['token'] = 'Bearer ' + access_token
     print(access_token)
+    session['admin_token'] = 'Bearer ' + access_token
     return "Logged in"
 
 @api.route('/user-login')
