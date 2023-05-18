@@ -1,4 +1,3 @@
-import os
 import unittest
 import json
 from api import api
@@ -13,8 +12,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.client = self.app.test_client
         self.app_context = self.app.app_context()
         self.app_context.push()
-        self.admin_token = os.environ.get('ADMIN_TOKEN')
-        self.user_token = os.environ.get('USER_TOKEN')
+        self.admin_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkszNUZFZE9PSkR4TlRKQjRxRU8xcyJ9.eyJpc3MiOiJodHRwczovL3R6aXZvcy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjQ2NTJhMzhjMmI4MzgwZDliZGJlMjUwIiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2ODQ0MjkyNDQsImV4cCI6MTY4NDUxNTY0NCwiYXpwIjoiSlZrdjRjZmlvREkzNFVVOU0xMktuNlFzZUluWklHZFoiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTpmYXZvcml0ZSIsImRlbGV0ZTp1c2VyIiwiZ2V0OmFsbCIsImdldDp1c2VyIiwiZ2V0OnVzZXJzIiwicGF0Y2g6ZmF2b3JpdGUiLCJwYXRjaDp1c2VyIiwicG9zdDpmYXZvcml0ZSIsInBvc3Q6dXNlciJdfQ.tLSK6oNFDUdrZ_xBo3iwKAZXkAwsw6liRq3rNg44T8yDnB_GocjSY5XjsumPl4t0kBc2eKFtQTc1Xs8eA9cNVCRi9kY-7_NVrOxYXQWSEpuiPIsEy2xsXpbIvwl-xoEyupqeOkYSQZA-riwUHUx550A8kWAzVsiowTpW-Aeg3dL-GYcljSh000q4cxYkE4fslfnOwmwfIQlZho37ucD5P8rqsrEYEdN9ZOfFjHUdd8u5mIhwNpClcok4yNxVS57zZjBeG_UPomo5hXnY1lOo23nOZTE5XXHQQxFNI6L-I8HJryZ-u0nleaLe68oGX9-VbFuFMYxL09U87-Em7cmrZw'
+        self.user_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkszNUZFZE9PSkR4TlRKQjRxRU8xcyJ9.eyJpc3MiOiJodHRwczovL3R6aXZvcy51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjQ2NTJhNTE3NDQ2Yzc0ZDY0YTllYTc1IiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2ODQ0Mjk0NzQsImV4cCI6MTY4NDUxNTg3NCwiYXpwIjoiSlZrdjRjZmlvREkzNFVVOU0xMktuNlFzZUluWklHZFoiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphbGwiLCJnZXQ6dXNlciIsImdldDp1c2VycyJdfQ.sxfn4NvYWbJqHuL8BYveOePd81F0s6iDH33qd6DszeO8ULcjouGSFETyYCEH7pTo4N03ObUELHHXf8ukO4_98G8PMdC_u4GfE5bjS_B7NpKFbtbywpxGwzp6bl9W_6Sv8njHftBrInfos_hMLCKrolTTrMU8UlzgQplJfBkGmnQoUttqyUYFdCNsqyVToItuG2j_iGZ_ckPhmiiYj9PUak84VLdZORbl7wPqW4TDjDhZwJh9KK5EcgW5LyWtbudUZesQkJ3Yfgpqo7CHusuMX7_hSc8B3o8Ag2pf7GDTGj52eLU7ZrmLy2NQLrhxUS05JJeYj6ZsrE1u1xV90He9xQ'
         db.create_all()
         # make sure we have at least one user
         users = User.query.all()
