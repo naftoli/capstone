@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from api import api
-from models import setup_db
+from models import setup_db, db
 
 # create and configure the app
 def create_app(test_config=None):
@@ -13,6 +13,7 @@ def create_app(test_config=None):
 
 app = create_app()
 app.register_blueprint(api)
+db.create_all()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
