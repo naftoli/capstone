@@ -1,15 +1,16 @@
 from flask import Blueprint, jsonify, abort, request, redirect, session
-from models import User, Favorite
+from models import User, Favorite, db
 from auth import AuthError, requires_auth
 import requests
+import os
 
 api = Blueprint('api', __name__)
 
-AUTH0_DOMAIN = 'tzivos.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'capstone'
-CLIENT_ID = 'JVkv4cfioDI34UU9M12Kn6QseInZIGdZ'
-CLIENT_SECRET = 'LEuarqV8ADC38eXI4t6SWOU_C_1zbqQqq61z9-antoM7RKhupBh6bMpcO-oxrPfs'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get('ALGORITHMS')
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 # ROUTES
 @api.route('/login')
@@ -45,22 +46,11 @@ def loggedout():
 @api.route('/', methods=['GET'])
 @requires_auth('get:all')
 def get_all(payload):
-    ''' get all users and their favorite links '''
-    users = User.query.all()
-    if not users:
-        abort(400)
-
-    info = []
-    for user in users:
-        info.append({
-            'user': user.format(),
-            'favorites': [f.link for f in user.get_favorite_links()]
-        })
-
-    return jsonify({
-        'success': True,
-        'users': info
-    }), 200
+    #find out if logged in or not
+    if 'token' in session:
+        return redirect('/users')
+    else:
+        return redirect('/login')
 
 @api.route('/users', methods=['GET'])
 @requires_auth('get:users')

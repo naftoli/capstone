@@ -38,15 +38,16 @@ To run the server, execute:
 ```bash
 export FLASK_APP=app.py
 export FLASK_ENV=development
-flask run
+flask run --reload
 ```
 Sourcing the `setup.sh` file will set the environment variables needed to run the application.
-Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
+Setting the `FLASK_ENV` variable to `development` will detect file changes.
 Setting the `FLASK_APP` variable to `app.py` directs flask to use the `app.py` file to find the application.
 
 ## Testing
 To run the tests, run
 ```bash
+source setup.sh
 python test_app.py
 ```
 
@@ -93,7 +94,8 @@ The API will return the following error types when requests fail:
 
 ### Endpoints
 #### GET /
-- Return a list of all users and their favorite links
+- If user is logged in, routes to '/users' endpoint
+- Otherwise, routes to login page
 
 #### GET /users
 - Returns a list of users
